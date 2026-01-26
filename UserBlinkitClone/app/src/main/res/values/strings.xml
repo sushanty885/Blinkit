@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">UserBlinkitClone</string>
+    <string name="search">Search</string>
+    <string name="bestsellers">Bestsellers</string>
+    <string name="shop_by_category">Shop by Category</string>
+    <string name="profile_image">Profile Image</string>
+</resources>

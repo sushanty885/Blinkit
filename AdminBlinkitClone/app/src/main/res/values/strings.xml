@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AdminBlinkitClone</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="add_product">AddProduct</string>
+    <string name="orders">Orders</string>
+</resources>
