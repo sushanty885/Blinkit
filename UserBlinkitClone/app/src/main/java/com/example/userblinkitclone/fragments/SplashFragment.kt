@@ -1,4 +1,4 @@
-package com.example.userblinkitclone
+package com.example.userblinkitclone.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import com.example.userblinkitclone.R
 import com.example.userblinkitclone.activity.AuthActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SplashFragment : Fragment() {
 
@@ -23,9 +27,10 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Handler(Looper.getMainLooper()).postDelayed({
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(3000)
             startActivity(Intent(requireActivity(), AuthActivity::class.java))
             requireActivity().finish()
-        }, 3000)
+        }
     }
 }

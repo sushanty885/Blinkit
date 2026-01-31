@@ -19,14 +19,15 @@ import com.example.userblinkitclone.R
 import com.example.userblinkitclone.adapter.AdapterProduct
 import com.example.userblinkitclone.databinding.FragmentCategoryBinding
 import com.example.userblinkitclone.databinding.ItemProductBinding
-import com.example.userblinkitclone.model.Product
-import com.example.userblinkitclone.viewmodel.ProductViewModel
+import com.example.userblinkitclone.models.Product
+import com.example.userblinkitclone.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 class CategoryFragment : Fragment() {
 
     private lateinit var binding: FragmentCategoryBinding
-    private val viewModel: ProductViewModel by activityViewModels()
+    private val viewModel: UserViewModel by activityViewModels()
+    private lateinit var adapterProduct: AdapterProduct
     private lateinit var cartListener: CartListener
 
     override fun onAttach(context: Context) {
@@ -41,7 +42,7 @@ class CategoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
@@ -57,9 +58,18 @@ class CategoryFragment : Fragment() {
             activity?.onBackPressed()
         }
 
-        category?.let {
-            viewModel.fetchProductsByCategory(it)
-        }
+        setupRecyclerView()
+        observeProductsAndCart(category)
+    }
+
+    private fun setupRecyclerView() {
+        adapterProduct = AdapterProduct(::onAddToCartClicked, ::onIncrementClicked, ::onDecrementClicked)
+        binding.rvProducts.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.rvProducts.adapter = adapterProduct
+    }
+
+    private fun observeProductsAndCart(category: String?) {
+        category?.let { viewModel.fetchProductsByCategory(it) }
 
         lifecycleScope.launch {
             viewModel.products.collect { products ->
@@ -69,10 +79,14 @@ class CategoryFragment : Fragment() {
                 } else {
                     binding.tvNoProducts.visibility = View.GONE
                     binding.rvProducts.visibility = View.VISIBLE
-                    val adapter = AdapterProduct(products, ::onAddToCartClicked, ::onIncrementClicked, ::onDecrementClicked)
-                    binding.rvProducts.layoutManager = GridLayoutManager(requireContext(), 2)
-                    binding.rvProducts.adapter = adapter
                 }
+                adapterProduct.submitList(products)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.cartItems.collect { cartItems ->
+                adapterProduct.setCartProducts(cartItems)
             }
         }
     }
@@ -80,6 +94,7 @@ class CategoryFragment : Fragment() {
     private fun onAddToCartClicked(product: Product, productBinding: ItemProductBinding) {
         productBinding.btnAdd.visibility = View.GONE
         productBinding.llProductCount.visibility = View.VISIBLE
+        productBinding.tvProductCount.text = "1"
         viewModel.addToCart(product)
         cartListener.showCartLayout(viewModel.getCartItemCount())
         cartListener.savingCartItemCount(viewModel.getCartItemCount())

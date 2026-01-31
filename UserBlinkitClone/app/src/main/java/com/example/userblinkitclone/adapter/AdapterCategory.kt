@@ -1,4 +1,4 @@
-package com.example.userblinkitclone.adapters
+package com.example.userblinkitclone.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.userblinkitclone.databinding.ItemViewProductCategoryBinding
 import com.example.userblinkitclone.models.Category
 
-class CategoryAdapter(
+class AdapterCategory(
     private val categoryList: List<Category>,
     private val onCategoryClicked: (Category) -> Unit
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+) : RecyclerView.Adapter<AdapterCategory.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val binding = ItemViewProductCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)

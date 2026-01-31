@@ -6,17 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.userblinkitclone.adapter.CartAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.userblinkitclone.adapter.AdapterCartProducts
 import com.example.userblinkitclone.databinding.FragmentCartBinding
-import com.example.userblinkitclone.viewmodel.ProductViewModel
+import com.example.userblinkitclone.viewmodel.UserViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
 
 class CartFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentCartBinding
-    private val viewModel: ProductViewModel by activityViewModels()
-    private lateinit var adapter: CartAdapter
+    private val viewModel: UserViewModel by activityViewModels()
+    private val adapterCartProducts = AdapterCartProducts()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,11 +30,22 @@ class CartFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+        observeCartItems()
+    }
+
+    private fun observeCartItems() {
         lifecycleScope.launch {
             viewModel.cartItems.collect { cartItems ->
-                adapter = CartAdapter(cartItems)
-                binding.rvCartItems.adapter = adapter
+                adapterCartProducts.submitList(cartItems)
             }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        binding.rvCartItems.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = adapterCartProducts
         }
     }
 }

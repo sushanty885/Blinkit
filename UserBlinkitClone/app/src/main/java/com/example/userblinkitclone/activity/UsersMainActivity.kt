@@ -1,5 +1,6 @@
 package com.example.userblinkitclone.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -10,22 +11,20 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.userblinkitclone.CartListener
 import com.example.userblinkitclone.R
-import com.example.userblinkitclone.databinding.ActivityMainBinding
+import com.example.userblinkitclone.databinding.ActivityUsersMainBinding
 import com.example.userblinkitclone.fragments.CartFragment
-import com.example.userblinkitclone.viewmodel.ProductViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.coroutines.flow.collect
+import com.example.userblinkitclone.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), CartListener {
+class UsersMainActivity : AppCompatActivity(), CartListener {
 
-    private lateinit var binding: ActivityMainBinding
-    val viewModel: ProductViewModel by viewModels()
+    private lateinit var binding: ActivityUsersMainBinding
+    private val viewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityUsersMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -34,14 +33,22 @@ class MainActivity : AppCompatActivity(), CartListener {
         }
 
         lifecycleScope.launch {
-            viewModel.cartItems.collect {
-                showCartLayout(it.size)
+            viewModel.cartItems.collect { cartItems ->
+                showCartLayout(cartItems.size)
             }
         }
 
         binding.cart.ivCartArrow.setOnClickListener {
             val cartFragment = CartFragment()
             cartFragment.show(supportFragmentManager, "CartFragment")
+        }
+
+        onNextButtonClicked()
+    }
+
+    private fun onNextButtonClicked() {
+        binding.cart.tvNext.setOnClickListener { 
+            startActivity(Intent(this, OrderPlaceActivity::class.java))
         }
     }
 
@@ -50,8 +57,10 @@ class MainActivity : AppCompatActivity(), CartListener {
         if (itemCount > 0) {
             cartBinding.cvCart.visibility = View.VISIBLE
             cartBinding.tvCartItemCount.text = "$itemCount items"
+            cartBinding.tvNext.visibility = View.VISIBLE
         } else {
             cartBinding.cvCart.visibility = View.GONE
+            cartBinding.tvNext.visibility = View.GONE
         }
     }
 

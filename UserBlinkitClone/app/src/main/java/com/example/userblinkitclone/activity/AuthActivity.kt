@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.userblinkitclone.activity.MainActivity
 import com.example.userblinkitclone.Utils
 import com.example.userblinkitclone.databinding.ActivityAuthBinding
 import io.github.jan.supabase.gotrue.auth
@@ -36,7 +35,7 @@ class AuthActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(this@AuthActivity, "Sign in successful", Toast.LENGTH_SHORT)
                             .show()
-                        startActivity(Intent(this@AuthActivity, MainActivity::class.java))
+                        startActivity(Intent(this@AuthActivity, UsersMainActivity::class.java))
                         finish()
                     }
                 } catch (e: Exception) {

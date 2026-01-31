@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ffbe0b"
-    tools:context=".SplashFragment">
+    tools:context=".fragments.SplashFragment">
 
 
     <LinearLayout

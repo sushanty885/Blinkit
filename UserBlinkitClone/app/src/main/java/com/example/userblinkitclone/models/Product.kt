@@ -1,4 +1,4 @@
-package com.example.userblinkitclone.model
+package com.example.userblinkitclone.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

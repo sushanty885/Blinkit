@@ -79,20 +79,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_green_rounded_corners"
-            android:drawableEnd="@drawable/ic_arrow_right"
+            android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
             android:drawablePadding="6dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="Checkout"
+            android:text="Next"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
